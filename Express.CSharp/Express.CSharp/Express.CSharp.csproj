@@ -45,12 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationData.cs" />
     <Compile Include="ExpressCSharp.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ExpressCSharp.Designer.cs">
       <DependentUpon>ExpressCSharp.cs</DependentUpon>
     </Compile>
+    <Compile Include="HttpSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ExpressCSharp.resx">

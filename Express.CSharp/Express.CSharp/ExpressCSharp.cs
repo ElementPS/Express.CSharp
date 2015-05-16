@@ -16,9 +16,14 @@ namespace Express.CSharp
 {
     public partial class ExpressCSharp : Form
     {
+        bool isXML = true;
+        ConfigurationData configurationData = null;
+        string soapAction = string.Empty;
+
         public ExpressCSharp()
         {
             InitializeComponent();
+            configurationData = new ConfigurationData();
         }
 
         private void btnClearData_Click(object sender, EventArgs e)
@@ -29,25 +34,21 @@ namespace Express.CSharp
 
         private void btnSaleRequest_Click(object sender, EventArgs e)
         {
-            var accountId = ConfigurationManager.AppSettings["AccountID"];
-            var accountToken = ConfigurationManager.AppSettings["AccountToken"];
-            var acceptorId = ConfigurationManager.AppSettings["AcceptorID"];
-            var applicationId = ConfigurationManager.AppSettings["ApplicationID"];
-            var applicationVersion = ConfigurationManager.AppSettings["ApplicationVersion"];
-            var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
+            isXML = true;
+            soapAction = string.Empty;
 
             XNamespace express = "https://transaction.elementexpress.com";
 
             XDocument doc = new XDocument(new XElement(express + "CreditCardSale",
                                                new XElement(express + "Credentials",
-                                                   new XElement(express + "AccountID", accountId),
-                                                   new XElement(express + "AccountToken", accountToken),
-                                                   new XElement(express + "AcceptorID", acceptorId)
+                                                   new XElement(express + "AccountID", configurationData.AccountId),
+                                                   new XElement(express + "AccountToken", configurationData.AccountToken),
+                                                   new XElement(express + "AcceptorID", configurationData.AcceptorId)
                                                             ),
                                                 new XElement(express + "Application",
-                                                    new XElement(express + "ApplicationID", applicationId),
-                                                    new XElement(express + "ApplicationVersion", applicationVersion),
-                                                    new XElement(express + "ApplicationName", applicationName)
+                                                    new XElement(express + "ApplicationID", configurationData.ApplicationId),
+                                                    new XElement(express + "ApplicationVersion", configurationData.ApplicationVersion),
+                                                    new XElement(express + "ApplicationName", configurationData.ApplicationName)
                                                             ),
                                                 new XElement(express + "Terminal",
                                                     new XElement(express + "TerminalID", "01"),
@@ -75,53 +76,127 @@ namespace Express.CSharp
 
         private void btnSendTransaction_Click(object sender, EventArgs e)
         {
-            //https://certtransaction.elementexpress.com/express.asmx -- soap
+            var httpSender = new HttpSender();
+            var response = string.Empty;
 
-            var request = (HttpWebRequest)WebRequest.Create("https://certtransaction.elementexpress.com/");
-
-            var data = Encoding.ASCII.GetBytes(txtRequest.Text);
-
-            request.Method = "POST";
-            request.ContentType = "text/xml";
-            request.ContentLength = txtRequest.Text.Length;
-
-            using (var stream = request.GetRequestStream())
+            if (isXML)
             {
-                stream.Write(data, 0, data.Length);
+                response = httpSender.Send(txtRequest.Text, configurationData.ExpressXMLEndpoint, string.Empty);
+            }
+            else
+            {
+                response = httpSender.Send(txtRequest.Text, configurationData.ExpressSOAPEndpoint, soapAction);
             }
 
-            var response = (HttpWebResponse)request.GetResponse();
-
-            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-            txtResponse.Text = responseString;
+            txtResponse.Text = response;
         }
 
         private void btnHealthCheck_Click(object sender, EventArgs e)
         {
-            var accountId = ConfigurationManager.AppSettings["AccountID"];
-            var accountToken = ConfigurationManager.AppSettings["AccountToken"];
-            var acceptorId = ConfigurationManager.AppSettings["AcceptorID"];
-            var applicationId = ConfigurationManager.AppSettings["ApplicationID"];
-            var applicationVersion = ConfigurationManager.AppSettings["ApplicationVersion"];
-            var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
+            isXML = true;
+            soapAction = string.Empty;
 
             XNamespace express = "https://transaction.elementexpress.com";
 
             XDocument doc = new XDocument(new XElement(express + "HealthCheck",
                                                new XElement(express + "Credentials",
-                                                   new XElement(express + "AccountID", accountId),
-                                                   new XElement(express + "AccountToken", accountToken),
-                                                   new XElement(express + "AcceptorID", acceptorId)
+                                                   new XElement(express + "AccountID", configurationData.AccountId),
+                                                   new XElement(express + "AccountToken", configurationData.AccountToken),
+                                                   new XElement(express + "AcceptorID", configurationData.AcceptorId)
                                                             ),
                                                 new XElement(express + "Application",
-                                                    new XElement(express + "ApplicationID", applicationId),
-                                                    new XElement(express + "ApplicationVersion", applicationVersion),
-                                                    new XElement(express + "ApplicationName", applicationName)
+                                                    new XElement(express + "ApplicationID", configurationData.ApplicationId),
+                                                    new XElement(express + "ApplicationVersion", configurationData.ApplicationVersion),
+                                                    new XElement(express + "ApplicationName", configurationData.ApplicationName)
                                                             )
                                                        )
                                          );
             txtRequest.Text = doc.ToString();
+        }
+
+        private void btnHealthCheckSOAP_Click(object sender, EventArgs e)
+        {
+            isXML = false;
+            soapAction = "\"https://transaction.elementexpress.com/HealthCheck\"";
+
+            XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
+            XNamespace xsd = XNamespace.Get("http://www.w3.org/2001/XMLSchema");
+            XNamespace soap = XNamespace.Get("http://schemas.xmlsoap.org/soap/envelope/");
+            XNamespace express = XNamespace.Get("https://transaction.elementexpress.com");
+
+
+            XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", null), new XElement(soap + "Envelope", new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                    new XAttribute(XNamespace.Xmlns + "xsd", xsd), new XAttribute(XNamespace.Xmlns + "soap", soap),
+                                            new XElement(soap + "Body",
+                                                new XElement(express + "HealthCheck",
+                                                    new XElement(express + "credentials",
+                                                        new XElement(express + "AccountID", configurationData.AccountId),
+                                                        new XElement(express + "AccountToken", configurationData.AccountToken),
+                                                        new XElement(express + "AcceptorID", configurationData.AcceptorId)
+                                                        ),
+                                                    new XElement(express + "application",
+                                                        new XElement(express + "ApplicationID", configurationData.ApplicationId),
+                                                        new XElement(express + "ApplicationVersion", configurationData.ApplicationVersion),
+                                                        new XElement(express + "ApplicationName", configurationData.ApplicationName)
+                                                        )
+                                                    )
+                                              )
+                                            )
+                                            );
+
+            txtRequest.Text = doc.Declaration.ToString() + Environment.NewLine + doc.ToString();
+        }
+
+        private void btnSaleRequestSOAP_Click(object sender, EventArgs e)
+        {
+            isXML = false;
+            soapAction = "\"https://transaction.elementexpress.com/CreditCardSale\"";
+
+            XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
+            XNamespace xsd = XNamespace.Get("http://www.w3.org/2001/XMLSchema");
+            XNamespace soap = XNamespace.Get("http://schemas.xmlsoap.org/soap/envelope/");
+            XNamespace express = XNamespace.Get("https://transaction.elementexpress.com");
+
+
+            XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", null), new XElement(soap + "Envelope", new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                    new XAttribute(XNamespace.Xmlns + "xsd", xsd), new XAttribute(XNamespace.Xmlns + "soap", soap),
+                                            new XElement(soap + "Body",
+                                                new XElement(express + "CreditCardSale",
+                                                    new XElement(express + "credentials",
+                                                        new XElement(express + "AccountID", configurationData.AccountId),
+                                                        new XElement(express + "AccountToken", configurationData.AccountToken),
+                                                        new XElement(express + "AcceptorID", configurationData.AcceptorId)
+                                                        ),
+                                                    new XElement(express + "application",
+                                                        new XElement(express + "ApplicationID", configurationData.ApplicationId),
+                                                        new XElement(express + "ApplicationVersion", configurationData.ApplicationVersion),
+                                                        new XElement(express + "ApplicationName", configurationData.ApplicationName)
+                                                        ),
+                                                new XElement(express + "terminal",
+                                                    new XElement(express + "TerminalID", "01"),
+                                                    new XElement(express + "CardholderPresentCode", "Present"),
+                                                    new XElement(express + "CardInputCode", "ManualKeyed"),
+                                                    new XElement(express + "TerminalCapabilityCode", "MagstripeReader"),
+                                                    new XElement(express + "TerminalEnvironmentCode", "LocalAttended"),
+                                                    new XElement(express + "CardPresentCode", "Present"),
+                                                    new XElement(express + "MotoECICode", "NotUsed"),
+                                                    new XElement(express + "CVVPresenceCode", "NotProvided")
+                                                            ),
+                                                new XElement(express + "card",
+                                                    new XElement(express + "CardNumber", "5499990123456781"),
+                                                    new XElement(express + "ExpirationMonth", "09"),
+                                                    new XElement(express + "ExpirationYear", "08")
+                                                            ),
+                                                new XElement(express + "transaction",
+                                                    new XElement(express + "TransactionAmount", "6.55"),
+                                                    new XElement(express + "MarketCode", "Retail")
+                                                            )
+                                                    )
+                                              )
+                                            )
+                                            );
+
+            txtRequest.Text = doc.Declaration.ToString() + Environment.NewLine + doc.ToString();
         }
     }
 }
