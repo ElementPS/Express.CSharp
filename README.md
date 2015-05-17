@@ -9,6 +9,8 @@ Integration to Element Express API using CSharp
 
 This repository demonstrates an integration to the Element Express API using c#.  The code was compiled and tested using Microsoft Visual Studio Express 2013 for Windows Desktop.  The application itself allows a user to populate a credit sale request or a health check request using either SOAP or XML formats and then send the request to Element's Express API for further processing.  The app then displays the result returned from Element's platform.
 
+![Express.CSharp](https://github.com/ElementPS/Express.CSharp/blob/master/screenshot.PNG)
+
 ##Prerequisites
 
 Please contact your Integration Team member for any questions about the prerequisite below.
@@ -104,7 +106,7 @@ And this is the SOAP request:
 
 ##Step 2: Send Request to the Express API
 
-The HttpSender class is used to send both the XMl and SOAP requests.  The only difference is the endpoint the data is sent to and the SOAPAction header that is added when sending SOAP requests.
+The HttpSender class is used to send both the XML and SOAP requests.  The only difference is the endpoint the data is sent to and the SOAPAction header that is added when sending SOAP requests.
 
 ```
 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
