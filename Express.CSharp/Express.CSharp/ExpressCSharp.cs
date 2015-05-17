@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Configuration;
+using System.Xml;
 
 namespace Express.CSharp
 {
@@ -87,6 +88,9 @@ namespace Express.CSharp
             {
                 response = httpSender.Send(txtRequest.Text, configurationData.ExpressSOAPEndpoint, soapAction);
             }
+
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(response);
 
             txtResponse.Text = response;
         }
