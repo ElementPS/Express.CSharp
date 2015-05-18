@@ -128,7 +128,7 @@ using (var stream = webRequest.GetRequestStream())
 
 ##Step 3: Receive response from Express API
 
-The response will be in an XML format regardless of sending XML or SOAP.
+The response will be in an XML format regardless of sending XML or SOAP but the actual data returned will be slightly different.  This is the response to an XML request.
 
 ```
 <CreditCardSaleResponse xmlns='https://transaction.elementexpress.com'>
