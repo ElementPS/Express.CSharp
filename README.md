@@ -21,7 +21,7 @@ Please contact your Integration Team member for any questions about the prerequi
 
 * When you create your Express test account an email will be sent containing links to documentation.
 
-##Step 1: Generate a request package
+##Step 1: Generate a request
 
 You can either generate an XML request or a SOAP request.  The Credentials and Application elements are empty below because these elements are read from the App.config file.  When you receive an email after creating your test account the email will contain the information necessary to populate these fields in the App.config.  Only the credit sale request is shown below, please take a look at the code for the health check message.
 
@@ -126,12 +126,40 @@ using (var stream = webRequest.GetRequestStream())
 }
 ```
 
-##Step 3: Receive response from triPOS
+##Step 3: Receive response from Express API
 
 The response will be in an XML format regardless of sending XML or SOAP.
 
 ```
-<CreditCardSaleResponse xmlns='https://transaction.elementexpress.com'><Response><ExpressResponseCode>0</ExpressResponseCode><ExpressResponseMessage>Approved</ExpressResponseMessage><HostResponseCode>000</HostResponseCode><HostResponseMessage>AP</HostResponseMessage><ExpressTransactionDate>20150516</ExpressTransactionDate><ExpressTransactionTime>215643</ExpressTransactionTime><ExpressTransactionTimezone>UTC-05:00:00</ExpressTransactionTimezone><Batch><HostBatchID>1</HostBatchID><HostItemID>3</HostItemID><HostBatchAmount>19.65</HostBatchAmount></Batch><Card><AVSResponseCode>N</AVSResponseCode><CardLogo>Mastercard</CardLogo></Card><Transaction><TransactionID>2005018010</TransactionID><ApprovalNumber>000056</ApprovalNumber><AcquirerData>bMCC1440300714</AcquirerData><ProcessorName>NULL_PROCESSOR_TEST</ProcessorName><TransactionStatus>Approved</TransactionStatus><TransactionStatusCode>1</TransactionStatusCode><ApprovedAmount>6.55</ApprovedAmount></Transaction></Response></CreditCardSaleResponse>
+<CreditCardSaleResponse xmlns='https://transaction.elementexpress.com'>
+<Response>
+<ExpressResponseCode>0</ExpressResponseCode>
+<ExpressResponseMessage>Approved</ExpressResponseMessage>
+<HostResponseCode>000</HostResponseCode>
+<HostResponseMessage>AP</HostResponseMessage>
+<ExpressTransactionDate>20150516</ExpressTransactionDate>
+<ExpressTransactionTime>215643</ExpressTransactionTime>
+<ExpressTransactionTimezone>UTC-05:00:00</ExpressTransactionTimezone>
+<Batch>
+<HostBatchID>1</HostBatchID>
+<HostItemID>3</HostItemID>
+<HostBatchAmount>19.65</HostBatchAmount>
+</Batch>
+<Card>
+<AVSResponseCode>N</AVSResponseCode>
+<CardLogo>Mastercard</CardLogo>
+</Card>
+<Transaction>
+<TransactionID>2005018010</TransactionID>
+<ApprovalNumber>000056</ApprovalNumber>
+<AcquirerData>bMCC1440300714</AcquirerData>
+<ProcessorName>NULL_PROCESSOR_TEST</ProcessorName>
+<TransactionStatus>Approved</TransactionStatus>
+<TransactionStatusCode>1</TransactionStatusCode>
+<ApprovedAmount>6.55</ApprovedAmount>
+</Transaction>
+</Response>
+</CreditCardSaleResponse>
 ```
 
 
