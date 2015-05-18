@@ -55,8 +55,8 @@ This is the XML request:
   </Transaction>
   <Card>
     <CardNumber>5499990123456781</CardNumber>
-    <ExpirationMonth>09</ExpirationMonth>
-    <ExpirationYear>08</ExpirationYear>
+    <ExpirationMonth>12</ExpirationMonth>
+    <ExpirationYear>19</ExpirationYear>
   </Card>
 </CreditCardSale>
 
@@ -77,7 +77,7 @@ And this is the SOAP request:
       </credentials>
       <application>
         <ApplicationID></ApplicationID>
-        <ApplicationVersion></ApplicationVersion>
+        <ApplicationVersion>1.0</ApplicationVersion>
         <ApplicationName>Express.CSharp</ApplicationName>
       </application>
       <terminal>
@@ -92,8 +92,8 @@ And this is the SOAP request:
       </terminal>
       <card>
         <CardNumber>5499990123456781</CardNumber>
-        <ExpirationMonth>09</ExpirationMonth>
-        <ExpirationYear>08</ExpirationYear>
+        <ExpirationMonth>12</ExpirationMonth>
+        <ExpirationYear>19</ExpirationYear>
       </card>
       <transaction>
         <TransactionAmount>6.55</TransactionAmount>
@@ -131,35 +131,151 @@ using (var stream = webRequest.GetRequestStream())
 The response will be in an XML format regardless of sending XML or SOAP but the actual data returned will be slightly different.  This is the response to an XML request.
 
 ```
-<CreditCardSaleResponse xmlns='https://transaction.elementexpress.com'>
-<Response>
-<ExpressResponseCode>0</ExpressResponseCode>
-<ExpressResponseMessage>Approved</ExpressResponseMessage>
-<HostResponseCode>000</HostResponseCode>
-<HostResponseMessage>AP</HostResponseMessage>
-<ExpressTransactionDate>20150516</ExpressTransactionDate>
-<ExpressTransactionTime>215643</ExpressTransactionTime>
-<ExpressTransactionTimezone>UTC-05:00:00</ExpressTransactionTimezone>
-<Batch>
-<HostBatchID>1</HostBatchID>
-<HostItemID>3</HostItemID>
-<HostBatchAmount>19.65</HostBatchAmount>
-</Batch>
-<Card>
-<AVSResponseCode>N</AVSResponseCode>
-<CardLogo>Mastercard</CardLogo>
-</Card>
-<Transaction>
-<TransactionID>2005018010</TransactionID>
-<ApprovalNumber>000056</ApprovalNumber>
-<AcquirerData>bMCC1440300714</AcquirerData>
-<ProcessorName>NULL_PROCESSOR_TEST</ProcessorName>
-<TransactionStatus>Approved</TransactionStatus>
-<TransactionStatusCode>1</TransactionStatusCode>
-<ApprovedAmount>6.55</ApprovedAmount>
-</Transaction>
-</Response>
+?xml version="1.0" encoding="utf-16"?>
+<CreditCardSaleResponse xmlns="https://transaction.elementexpress.com">
+ <Response>
+  <ExpressResponseCode>0</ExpressResponseCode>
+  <ExpressResponseMessage>Approved</ExpressResponseMessage>
+  <HostResponseCode>000</HostResponseCode>
+  <HostResponseMessage>AP</HostResponseMessage>
+  <ExpressTransactionDate>20150518</ExpressTransactionDate>
+  <ExpressTransactionTime>121654</ExpressTransactionTime>
+  <ExpressTransactionTimezone>UTC-05:00:00</ExpressTransactionTimezone>
+  <Batch>
+   <HostBatchID>1</HostBatchID>
+   <HostItemID>8</HostItemID>
+   <HostBatchAmount>52.40</HostBatchAmount>
+  </Batch>
+  <Card>
+   <AVSResponseCode>N</AVSResponseCode>
+   <CardLogo>Mastercard</CardLogo>
+  </Card>
+  <Transaction>
+   <TransactionID>2005019034</TransactionID>
+   <ApprovalNumber>000016</ApprovalNumber>
+   <AcquirerData>bMCC1440300714</AcquirerData>
+   <ProcessorName>NULL_PROCESSOR_TEST</ProcessorName>
+   <TransactionStatus>Approved</TransactionStatus>
+   <TransactionStatusCode>1</TransactionStatusCode>
+   <ApprovedAmount>6.55</ApprovedAmount>
+  </Transaction>
+ </Response>
 </CreditCardSaleResponse>
+```
+
+This is the response to a SOAP request
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <soap:Body>
+  <CreditCardSaleResponse xmlns="https://transaction.elementexpress.com">
+   <response>
+    <ExpressResponseCode>0</ExpressResponseCode>
+    <ExpressResponseMessage>Approved</ExpressResponseMessage>
+    <ExpressTransactionDate>20150518</ExpressTransactionDate>
+    <ExpressTransactionTime>121747</ExpressTransactionTime>
+    <ExpressTransactionTimezone>UTC-05:00</ExpressTransactionTimezone>
+    <HostResponseCode>000</HostResponseCode>
+    <HostResponseMessage>AP</HostResponseMessage>
+    <Credentials />
+    <Batch>
+     <BatchCloseType>Regular</BatchCloseType>
+     <BatchQueryType>Totals</BatchQueryType>
+     <HostBatchID>1</HostBatchID>
+     <HostItemID>9</HostItemID>
+     <HostBatchAmount>58.95</HostBatchAmount>
+     <BatchGroupingCode>FullBatch</BatchGroupingCode>
+     <BatchIndexCode>Current</BatchIndexCode>
+    </Batch>
+    <Card>
+     <EncryptedFormat>Default</EncryptedFormat>
+     <AVSResponseCode>N</AVSResponseCode>
+     <CardLogo>Mastercard</CardLogo>
+    </Card>
+    <Transaction>
+     <TransactionID>2005019038</TransactionID>
+     <ApprovalNumber>000017</ApprovalNumber>
+     <ReversalType>System</ReversalType>
+     <MarketCode>Default</MarketCode>
+     <AcquirerData>bMCC1440300714</AcquirerData>
+     <BillPaymentFlag>False</BillPaymentFlag>
+     <DuplicateCheckDisableFlag>False</DuplicateCheckDisableFlag>
+     <DuplicateOverrideFlag>False</DuplicateOverrideFlag>
+     <RecurringFlag>False</RecurringFlag>
+     <ProcessorName>NULL_PROCESSOR_TEST</ProcessorName>
+     <TransactionStatus>Approved</TransactionStatus>
+     <TransactionStatusCode>1</TransactionStatusCode>
+     <PartialApprovedFlag>False</PartialApprovedFlag>
+     <ApprovedAmount>6.55</ApprovedAmount>
+    </Transaction>
+    <PaymentAccount>
+     <PaymentAccountType>CreditCard</PaymentAccountType>
+     <PASSUpdaterBatchStatus>Null</PASSUpdaterBatchStatus>
+     <PASSUpdaterOption>Null</PASSUpdaterOption>
+    </PaymentAccount>
+    <Address />
+    <ScheduledTask>
+     <RunFrequency>OneTimeFuture</RunFrequency>
+     <RunUntilCancelFlag>False</RunUntilCancelFlag>
+     <ScheduledTaskStatus>Active</ScheduledTaskStatus>
+    </ScheduledTask>
+    <DemandDepositAccount>
+     <DDAAccountType>Checking</DDAAccountType>
+     <CheckType>Personal</CheckType>
+    </DemandDepositAccount>
+    <TransactionSetup>
+     <TransactionSetupMethod>Null</TransactionSetupMethod>
+     <Device>Null</Device>
+     <Embedded>False</Embedded>
+     <CVVRequired>False</CVVRequired>
+     <AutoReturn>False</AutoReturn>
+     <DeviceInputCode>NotUsed</DeviceInputCode>
+    </TransactionSetup>
+    <Terminal>
+     <TerminalType>Unknown</TerminalType>
+     <CardPresentCode>UseDefault</CardPresentCode>
+     <CardholderPresentCode>UseDefault</CardholderPresentCode>
+     <CardInputCode>UseDefault</CardInputCode>
+     <CVVPresenceCode>UseDefault</CVVPresenceCode>
+     <TerminalCapabilityCode>UseDefault</TerminalCapabilityCode>
+     <TerminalEnvironmentCode>UseDefault</TerminalEnvironmentCode>
+     <MotoECICode>UseDefault</MotoECICode>
+     <CVVResponseType>Regular</CVVResponseType>
+     <ConsentCode>NotUsed</ConsentCode>
+     <TerminalEncryptionFormat>Default</TerminalEncryptionFormat>
+    </Terminal>
+    <AutoRental>
+     <AutoRentalVehicleClassCode>Unused</AutoRentalVehicleClassCode>
+     <AutoRentalDistanceUnit>Unused</AutoRentalDistanceUnit>
+     <AutoRentalAuditAdjustmentCode>NoAdjustments</AutoRentalAuditAdjustmentCode>
+    </AutoRental>
+    <Healthcare>
+     <HealthcareFlag>False</HealthcareFlag>
+     <HealthcareFirstAccountType>NotSpecified</HealthcareFirstAccountType>
+     <HealthcareFirstAmountType>LedgerBalance</HealthcareFirstAmountType>
+     <HealthcareFirstAmountSign>Positive</HealthcareFirstAmountSign>
+     <HealthcareSecondAccountType>NotSpecified</HealthcareSecondAccountType>
+     <HealthcareSecondAmountType>LedgerBalance</HealthcareSecondAmountType>
+     <HealthcareSecondAmountSign>Positive</HealthcareSecondAmountSign>
+     <HealthcareThirdAccountType>NotSpecified</HealthcareThirdAccountType>
+     <HealthcareThirdAmountType>LedgerBalance</HealthcareThirdAmountType>
+     <HealthcareThirdAmountSign>Positive</HealthcareThirdAmountSign>
+     <HealthcareFourthAccountType>NotSpecified</HealthcareFourthAccountType>
+     <HealthcareFourthAmountType>LedgerBalance</HealthcareFourthAmountType>
+     <HealthcareFourthAmountSign>Positive</HealthcareFourthAmountSign>
+    </Healthcare>
+    <Lodging>
+     <LodgingPrestigiousPropertyCode>NonParticipant</LodgingPrestigiousPropertyCode>
+     <LodgingSpecialProgramCode>Default</LodgingSpecialProgramCode>
+     <LodgingChargeType>Default</LodgingChargeType>
+    </Lodging>
+    <BIN />
+    <EnhancedBIN />
+   </response>
+  </CreditCardSaleResponse>
+ </soap:Body>
+</soap:Envelope>
 ```
 
 
