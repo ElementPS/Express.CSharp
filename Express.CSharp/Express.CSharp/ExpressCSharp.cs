@@ -67,8 +67,8 @@ namespace Express.CSharp
                                                             ),
                                                 new XElement(express + "Card",
                                                     new XElement(express + "CardNumber", "5499990123456781"),
-                                                    new XElement(express + "ExpirationMonth", "09"),
-                                                    new XElement(express + "ExpirationYear", "08")
+                                                    new XElement(express + "ExpirationMonth", "12"),
+                                                    new XElement(express + "ExpirationYear", "19")
                                                             )
                                                        )
                                          );
@@ -89,8 +89,23 @@ namespace Express.CSharp
                 response = httpSender.Send(txtRequest.Text, configurationData.ExpressSOAPEndpoint, soapAction);
             }
 
+            //load into XmlDocument for parsing
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(response);
+
+            //also allows printing in a better format
+            var settings = new XmlWriterSettings(); 
+            settings.Indent = true; 
+            settings.IndentChars = " "; 
+            settings.Encoding = Encoding.UTF8; 
+           
+            using (var stringWriter = new StringWriter())
+            using (var xmlTextWriter = XmlWriter.Create(stringWriter, settings))
+            {
+                xmlDoc.WriteTo(xmlTextWriter);
+                xmlTextWriter.Flush();
+                response = stringWriter.GetStringBuilder().ToString();
+            }
 
             txtResponse.Text = response;
         }
@@ -188,8 +203,8 @@ namespace Express.CSharp
                                                             ),
                                                 new XElement(express + "card",
                                                     new XElement(express + "CardNumber", "5499990123456781"),
-                                                    new XElement(express + "ExpirationMonth", "09"),
-                                                    new XElement(express + "ExpirationYear", "08")
+                                                    new XElement(express + "ExpirationMonth", "12"),
+                                                    new XElement(express + "ExpirationYear", "19")
                                                             ),
                                                 new XElement(express + "transaction",
                                                     new XElement(express + "TransactionAmount", "6.55"),
