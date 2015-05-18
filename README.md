@@ -131,7 +131,7 @@ using (var stream = webRequest.GetRequestStream())
 The response will be in an XML format regardless of sending XML or SOAP but the actual data returned will be slightly different.  This is the response to an XML request.
 
 ```
-?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0" encoding="utf-16"?>
 <CreditCardSaleResponse xmlns="https://transaction.elementexpress.com">
  <Response>
   <ExpressResponseCode>0</ExpressResponseCode>
