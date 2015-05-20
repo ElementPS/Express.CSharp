@@ -13,7 +13,7 @@ This repository demonstrates an integration to the Element Express API using c#.
 
 ##Prerequisites
 
-Please contact your Integration Team member for any questions about the prerequisite below.
+Please contact your Integration Analyst for any questions about the prerequisite below.
 
 * Create Express test account: http://www.elementps.com/Resources/Create-a-Test-Account
 
