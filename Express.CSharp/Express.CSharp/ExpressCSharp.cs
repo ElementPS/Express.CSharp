@@ -18,6 +18,7 @@ namespace Express.CSharp
     public partial class ExpressCSharp : Form
     {
         bool isXML = true;
+        bool isReport = false;
         ConfigurationData configurationData = null;
         string soapAction = string.Empty;
 
@@ -36,6 +37,7 @@ namespace Express.CSharp
         private void btnSaleRequest_Click(object sender, EventArgs e)
         {
             isXML = true;
+            isReport = false;
             soapAction = string.Empty;
 
             XNamespace express = "https://transaction.elementexpress.com";
@@ -80,7 +82,11 @@ namespace Express.CSharp
             var httpSender = new HttpSender();
             var response = string.Empty;
 
-            if (isXML)
+            if (isReport)
+            {
+                response = httpSender.Send(txtRequest.Text, configurationData.ExpressReportingXMLEndpoint, string.Empty);
+            }
+            else if (isXML)
             {
                 response = httpSender.Send(txtRequest.Text, configurationData.ExpressXMLEndpoint, string.Empty);
             }
@@ -113,6 +119,7 @@ namespace Express.CSharp
         private void btnHealthCheck_Click(object sender, EventArgs e)
         {
             isXML = true;
+            isReport = false;
             soapAction = string.Empty;
 
             XNamespace express = "https://transaction.elementexpress.com";
@@ -136,6 +143,7 @@ namespace Express.CSharp
         private void btnHealthCheckSOAP_Click(object sender, EventArgs e)
         {
             isXML = false;
+            isReport = false;
             soapAction = "\"https://transaction.elementexpress.com/HealthCheck\"";
 
             XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
@@ -169,6 +177,7 @@ namespace Express.CSharp
         private void btnSaleRequestSOAP_Click(object sender, EventArgs e)
         {
             isXML = false;
+            isReport = false;
             soapAction = "\"https://transaction.elementexpress.com/CreditCardSale\"";
 
             XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
@@ -216,6 +225,34 @@ namespace Express.CSharp
                                             );
 
             txtRequest.Text = doc.Declaration.ToString() + Environment.NewLine + doc.ToString();
+        }
+
+        private void btnTransactionQuery_Click(object sender, EventArgs e)
+        {
+            isXML = true;
+            isReport = true;
+            soapAction = string.Empty;
+
+            XNamespace express = "https://reporting.elementexpress.com";
+
+            XDocument doc = new XDocument(new XElement(express + "TransactionQuery",
+                                               new XElement(express + "Credentials",
+                                                   new XElement(express + "AccountID", configurationData.AccountId),
+                                                   new XElement(express + "AccountToken", configurationData.AccountToken),
+                                                   new XElement(express + "AcceptorID", configurationData.AcceptorId)
+                                                            ),
+                                                new XElement(express + "Application",
+                                                    new XElement(express + "ApplicationID", configurationData.ApplicationId),
+                                                    new XElement(express + "ApplicationVersion", configurationData.ApplicationVersion),
+                                                    new XElement(express + "ApplicationName", configurationData.ApplicationName)
+                                                            ),
+                                                new XElement(express + "Parameters",
+                                                    new XElement(express + "TransactionDateTimeBegin", "2018-02-01"),
+                                                    new XElement(express + "TransactionDateTimeEnd", "2018-02-28")
+                                                            )
+                                                       )
+                                         );
+            txtRequest.Text = doc.ToString();
         }
     }
 }

@@ -38,11 +38,12 @@
             this.btnHealthCheck = new System.Windows.Forms.Button();
             this.btnSaleRequestSOAP = new System.Windows.Forms.Button();
             this.btnHealthCheckSOAP = new System.Windows.Forms.Button();
+            this.btnTransactionQuery = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtRequest
             // 
-            this.txtRequest.Location = new System.Drawing.Point(15, 96);
+            this.txtRequest.Location = new System.Drawing.Point(15, 139);
             this.txtRequest.Multiline = true;
             this.txtRequest.Name = "txtRequest";
             this.txtRequest.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -52,7 +53,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 77);
+            this.label1.Location = new System.Drawing.Point(12, 120);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 1;
@@ -61,7 +62,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 240);
+            this.label2.Location = new System.Drawing.Point(12, 283);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 3;
@@ -69,7 +70,7 @@
             // 
             // txtResponse
             // 
-            this.txtResponse.Location = new System.Drawing.Point(12, 258);
+            this.txtResponse.Location = new System.Drawing.Point(12, 301);
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -136,11 +137,22 @@
             this.btnHealthCheckSOAP.UseVisualStyleBackColor = true;
             this.btnHealthCheckSOAP.Click += new System.EventHandler(this.btnHealthCheckSOAP_Click);
             // 
+            // btnTransactionQuery
+            // 
+            this.btnTransactionQuery.Location = new System.Drawing.Point(15, 71);
+            this.btnTransactionQuery.Name = "btnTransactionQuery";
+            this.btnTransactionQuery.Size = new System.Drawing.Size(137, 23);
+            this.btnTransactionQuery.TabIndex = 10;
+            this.btnTransactionQuery.Text = "Transaction Query XML";
+            this.btnTransactionQuery.UseVisualStyleBackColor = true;
+            this.btnTransactionQuery.Click += new System.EventHandler(this.btnTransactionQuery_Click);
+            // 
             // ExpressCSharp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(459, 401);
+            this.ClientSize = new System.Drawing.Size(459, 486);
+            this.Controls.Add(this.btnTransactionQuery);
             this.Controls.Add(this.btnHealthCheckSOAP);
             this.Controls.Add(this.btnSaleRequestSOAP);
             this.Controls.Add(this.btnHealthCheck);
@@ -170,6 +182,7 @@
         private System.Windows.Forms.Button btnHealthCheck;
         private System.Windows.Forms.Button btnSaleRequestSOAP;
         private System.Windows.Forms.Button btnHealthCheckSOAP;
+        private System.Windows.Forms.Button btnTransactionQuery;
     }
 }
 

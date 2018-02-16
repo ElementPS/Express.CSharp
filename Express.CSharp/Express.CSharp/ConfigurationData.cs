@@ -17,6 +17,7 @@ namespace Express.CSharp
         public string ApplicationName = string.Empty;
         public string ExpressSOAPEndpoint = string.Empty;
         public string ExpressXMLEndpoint = string.Empty;
+        public string ExpressReportingXMLEndpoint = string.Empty;
 
         public ConfigurationData()
         {
@@ -28,6 +29,7 @@ namespace Express.CSharp
             ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
             ExpressSOAPEndpoint = ConfigurationManager.AppSettings["ExpressSOAPEndpoint"];
             ExpressXMLEndpoint = ConfigurationManager.AppSettings["ExpressXMLEndpoint"];
+            ExpressReportingXMLEndpoint = ConfigurationManager.AppSettings["ExpressReportingXMLEndpoint"];
         }
     }
 }
