@@ -16,6 +16,7 @@ namespace Express.CSharp
             string result = string.Empty;
 
             var byteData = Encoding.ASCII.GetBytes(data);
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
             if (!String.IsNullOrEmpty(action))
